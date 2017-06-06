@@ -15,8 +15,14 @@ public:
     explicit CreateGraphsWindow(QWidget *parent = 0);
     ~CreateGraphsWindow();
 
+private slots:
+    void on_btnCloseWindow_clicked();
+
 private:
     Ui::CreateGraphsWindow *ui;
+    float mAmplitude;
+    float mPeriod;
+    float mMidline;
 };
 
 #endif // CREATEGRAPHSWINDOW_H

@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+CONFIG += c++11
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = SinusoidalGraphs
@@ -13,8 +15,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    creategraphswindow.cpp \
+    pinumber.cpp \
+    renderarea.cpp \
+    pinumbertest.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    creategraphswindow.h \
+    pinumber.h \
+    renderarea.h \
+    pinumbertest.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    creategraphswindow.ui
