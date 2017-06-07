@@ -2,6 +2,8 @@
 #define RENDERAREA_H
 
 #include <QWidget>
+#include <QColor>
+#include <QPen>
 
 class RenderArea : public QWidget
 {
@@ -9,9 +11,78 @@ class RenderArea : public QWidget
 public:
     explicit RenderArea(QWidget *parent = 0);
 
+    QSize minimumSizeHint() const Q_DECL_OVERRIDE;
+    QSize sizeHint() const Q_DECL_OVERRIDE;
+
+    void setBackgroundColor (QColor color) { mBackgroundColor = color; } // setter
+    QColor backgroundColor () const { return mBackgroundColor; } // getter
+
+    void setCurveColor (QColor color) { mCurvePen.setColor(color); } // setter
+    QColor curveColor () const { return mCurvePen.color(); } // getter
+
+    void setAxisColor (QColor color) { mAxisPen.setColor(color); } // setter
+    QColor axisColor () const { return mAxisPen.color(); } // getter
+
+    void setScale (float scale) { mScale = scale; repaint(); } // setter
+    float scale () const { return mScale; } // getter
+
+    void setInterval (float interval) { mIntervalLength = interval; repaint(); } // setter
+    float interval () const { return mIntervalLength; } // getter
+
+    void setStepCount (int stepCount) { mStepCount = stepCount; repaint(); } // setter
+    int stepCount () const { return mStepCount; } // getter
+
+    void setPeriod (float period) { mPeriod = period; repaint(); } // setter
+    float period () const { return mPeriod; } // getter
+
+    void setAmplitude (float amplitude) { mAmplitude = amplitude; repaint(); } // setter
+    float amplitude () const { return mAmplitude; } // getter
+
+    void setPhaseShift (float phaseShift) { mPhaseShift = phaseShift; repaint(); } // setter
+    float phaseShift () const { return mPhaseShift; } // getter
+
+    void setMidline (float midline) { mMidline = midline; repaint(); } // setter
+    float midline () const { return mMidline; } // getter
+
+    void setNegative (bool negative) { mNegative = negative; repaint(); } // setter
+    bool negative () const { return mNegative; } // getter
+
+    void setPeriodTimesPi (bool periodTimesPi) { mPeriodTimesPi = periodTimesPi; repaint(); } // setter
+    bool periodTimesPi () const { return mPeriodTimesPi; } // getter
+
+    void setPhaseShiftTimesPi (bool phaseShiftTimesPi) { mPhaseShiftTimesPi = phaseShiftTimesPi; repaint(); } // setter
+    bool phaseShiftTimesPi () const { return mPhaseShiftTimesPi; } // getter
+
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
 signals:
 
 public slots:
+
+private:
+    QColor mBackgroundColor;
+    QPen mCurvePen;
+    QPen mAxisPen;
+
+    float mIntervalLength;
+    int mStepCount;
+    float mScale;
+    float mPeriod;
+    float mAmplitude;
+    float mPhaseShift;
+    float mMidline;
+    bool mNegative;
+    bool mPeriodTimesPi;
+    bool mPhaseShiftTimesPi;
+    static int mBuffer; // used for the buffer around the curve in the drawing area
+    float mXRatio;
+    float mYRatio;
+    float mXAxisYValue;
+    float mYAxisXValue;
+
+    void setXRatio () ;
+    void setYRatio () ;
 };
 
 #endif // RENDERAREA_H
