@@ -113,13 +113,27 @@ void RenderArea::paintEvent(QPaintEvent *event)
     QPoint origin(mYAxisXValue,mXAxisYValue);
 
     float a, b, c, d; // f(x) = asin(b(x-c))+d
+
+    functionString = QString("f(x) = ");
     a = mAmplitude;
     if (mNegative)
     {
         a *= -1.0;
+        functionString.append("-");
     }
+    if (std::abs(a) != 1.0)
+    {
+        functionString.append(QString::number(a));
+    }
+    functionString.append("sin(");
     b = 2 * M_PI / mPeriod.value();
+    PiNumber bPi(b);
     c = mPhaseShift.value();
+    PiNumber cPi(c);
+    if (b != 1.0)
+    {
+        functionString.append(bPi.displayValue());
+    }
     d = mMidline;
 
     float y = (a * sin(b * (mXStart - c)) + d)*mYRatio;
@@ -145,4 +159,9 @@ void RenderArea::paintEvent(QPaintEvent *event)
     y = (a * sin(b * (t - c)) + d)*mYRatio;
     pixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
     painter.drawLine(pixel, prevPixel);
+    functionLabel.setParent(this);
+    functionLabel.setText(functionString);
+    functionLabel.resize(100,20);
+    functionLabel.move(origin);
+    functionLabel.show();
 }

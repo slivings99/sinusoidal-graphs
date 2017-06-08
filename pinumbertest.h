@@ -12,7 +12,7 @@ public:
 
 private:
     PiNumber    mPiNumber;
-    std::array<float, 13> testValues
+    std::array<float, 18> testValues
     { {
         3 * M_PI,
         3.2,    // not a multiple of pi
@@ -26,7 +26,12 @@ private:
         4.19, // approx 4/3 pi
         4.1888, // closer approx 4/3 pi
         4.18879, // closest approx
-        M_PI
+        M_PI,
+        2.0,
+        3.0,
+        4.0,
+        0.5,
+        0.25
     } };
 };
 

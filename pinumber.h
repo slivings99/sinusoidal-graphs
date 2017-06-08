@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <QString>
 
 class PiNumber
 {
@@ -15,6 +16,8 @@ public:
     float value() const {return mValue; } // getter
     static void ClosestFraction ( float value, int max_denominator, int & numerator, int & denominator );
     static void setPrecision (int precision); // setter
+    QString displayValue();
+    static void setRunTest(bool mRunTest = true);
 
 private:
     float   mValue;
@@ -23,6 +26,7 @@ private:
     int     mDenominator;
     static float mPrecision;
     static int mMaxDenominator;
+    static bool mRunTest;
 };
 
 #endif // PINUMBER_H

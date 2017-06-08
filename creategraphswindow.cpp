@@ -38,38 +38,36 @@ void CreateGraphsWindow::on_spinMidline_valueChanged(double midline)
     this->ui->renderArea->repaint();
 }
 
-void CreateGraphsWindow::on_spinPhaseShift_valueChanged(double value)
+void CreateGraphsWindow::updatePhaseShift()
 {
-    PiNumber    phaseShift;
+    float   value = this->ui->spinPhaseShift->value();
+    float   period = this->ui->renderArea->period().value();
 
     if (this->ui->checkPhaseShiftTimesPi->isChecked())
     {
-        phaseShift.setValue(value * M_PI);
+        value *= M_PI;
     }
-    else
+    if (value >= period)
     {
-        phaseShift.setValue(value);
+        value = std::fmod(value,period);
     }
+    PiNumber phaseShift(value);
     this->ui->renderArea->setPhaseShift(phaseShift);
     this->ui->renderArea->repaint();
 }
 
+void CreateGraphsWindow::on_spinPhaseShift_valueChanged(double value)
+{
+    Q_UNUSED(value);
+
+    updatePhaseShift();
+}
+
 void CreateGraphsWindow::on_checkPhaseShiftTimesPi_stateChanged(int checkState)
 {
-    PiNumber    phaseShift;
-    float       value;
+    Q_UNUSED(checkState);
 
-    value = this->ui->spinPhaseShift->value();
-    if (checkState == Qt::Checked)
-    {
-        phaseShift.setValue(value * M_PI);
-    }
-    else
-    {
-        phaseShift.setValue(value);
-    }
-    this->ui->renderArea->setPhaseShift(phaseShift);
-    this->ui->renderArea->repaint();
+    updatePhaseShift();
 }
 
 void CreateGraphsWindow::on_checkPhaseShiftTimesPi_clicked()
@@ -77,38 +75,36 @@ void CreateGraphsWindow::on_checkPhaseShiftTimesPi_clicked()
 
 }
 
+void CreateGraphsWindow::updatePeriod()
+{
+    float   value = this->ui->spinPeriod->value();
+
+    if (value > 0.0) // Period must always be more than 0.
+    {
+        if (this->ui->checkPeriodTimesPi->isChecked())
+        {
+            value *= M_PI;
+        }
+        this->ui->spinPhaseShift->setMaximum(value);
+        PiNumber period(value);
+        this->ui->renderArea->setPeriod(period);
+        this->ui->renderArea->repaint();
+    }
+
+}
+
 void CreateGraphsWindow::on_spinPeriod_valueChanged(double value)
 {
-    PiNumber    period;
+    Q_UNUSED(value);
 
-    if (this->ui->checkPeriodTimesPi->isChecked())
-    {
-        period.setValue(value * M_PI);
-    }
-    else
-    {
-        period.setValue(value);
-    }
-    this->ui->renderArea->setPeriod(period);
-    this->ui->renderArea->repaint();
+    updatePeriod();
 }
 
 void CreateGraphsWindow::on_checkPeriodTimesPi_stateChanged(int checkState)
 {
-    PiNumber    period;
-    float       value;
+    Q_UNUSED(checkState);
 
-    value = this->ui->spinPeriod->value();
-    if (checkState == Qt::Checked)
-    {
-        period.setValue(value * M_PI);
-    }
-    else
-    {
-        period.setValue(value);
-    }
-    this->ui->renderArea->setPeriod(period);
-    this->ui->renderArea->repaint();
+    updatePeriod();
 }
 
 void CreateGraphsWindow::on_checkPeriodTimesPi_clicked()

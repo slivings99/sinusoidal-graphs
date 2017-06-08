@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QColor>
 #include <QPen>
+#include <QLabel>
+#include <QString>
 #include "pinumber.h"
 
 class RenderArea : public QWidget
@@ -90,6 +92,8 @@ private:
 
     void setXRatio () ;
     void setYRatio () ;
+    QLabel functionLabel;
+    QString functionString;
 };
 
 #endif // RENDERAREA_H

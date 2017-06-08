@@ -39,6 +39,8 @@ private slots:
     void on_checkPeriodTimesPi_stateChanged(int arg1);
 
 private:
+    void updatePeriod();
+    void updatePhaseShift();
     Ui::CreateGraphsWindow *ui;
     float mAmplitude;
     float mPeriod;

@@ -1,17 +1,24 @@
 #include "pinumber.h"
 #include <cmath>
+#include <QString>
 
 PiNumber::PiNumber(float value)
 {
     setValue(value);
 }
 
-int PiNumber::mMaxDenominator = 50;
-float PiNumber::mPrecision = 0.01;
+int PiNumber::mMaxDenominator = 25;
+float PiNumber::mPrecision = 0.0001;
+bool PiNumber::mRunTest = false;
 
 void PiNumber::setPrecision(int precision)
 {
     PiNumber::mPrecision = precision;
+}
+
+void PiNumber::setRunTest(bool runTest)
+{
+    PiNumber::mRunTest = runTest;
 }
 
 void PiNumber::setValue(float value)
@@ -33,27 +40,52 @@ void PiNumber::setValue(float value)
         mIsFractionOfPi = true;
         mPiCoefficient = wholeNumber;
         mDenominator = 1;
-//        printf ("%d π \n", wholeNumber);
+        if (mRunTest)
+        {
+            printf ("Whole Multiple of Pi: %d π \n", wholeNumber);
+        }
     }
     else
     {
-//        printf ("%0.03f\n", piRatio);
+        if (mRunTest)
+        {
+            printf ("Ratio: %0.03f\n", piRatio);
+        }
         ClosestFraction(piRatio, mMaxDenominator, thisNumerator, thisDenominator);
-//        printf ("%d / %d\n",thisNumerator, thisDenominator);
         float ratio = (float) thisNumerator / (float) thisDenominator;
         if ( std::abs(piRatio - ratio) < mPrecision) {
             mIsFractionOfPi = true;
             mPiCoefficient = thisNumerator + wholeNumber*thisDenominator;
             mDenominator = thisDenominator;
-//            printf("%d π / %d\n", mPiCoefficient, thisDenominator);
+            if (mRunTest)
+            {
+                printf("Fraction: %d π / %d\n", mPiCoefficient, thisDenominator);
+            }
         }
         else {
-//            printf("%0.2f\n", mValue);
+            if (mRunTest)
+            {
+                printf("Value: %0.2f\n", mValue);
+            }
             mIsFractionOfPi = false;
             mPiCoefficient = 0;
             mDenominator = 0;
         }
     }
+}
+
+QString PiNumber::displayValue()
+{
+    QString output;
+    if (mIsFractionOfPi)
+    {
+        output = QString("Hello");
+    }
+    else
+    {
+        output = QString("%1").arg(mValue);
+    }
+    return(output);
 }
 
 void PiNumber::ClosestFraction( float value, int max_denominator, int & numerator, int & denominator )
