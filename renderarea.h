@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QColor>
 #include <QPen>
+#include "pinumber.h"
 
 class RenderArea : public QWidget
 {
@@ -32,14 +33,14 @@ public:
     void setStepCount (int stepCount) { mStepCount = stepCount; repaint(); } // setter
     int stepCount () const { return mStepCount; } // getter
 
-    void setPeriod (float period) { mPeriod = period; repaint(); } // setter
-    float period () const { return mPeriod; } // getter
+    void setPeriod (PiNumber period) { mPeriod = period; repaint(); } // setter
+    PiNumber period () const { return mPeriod; } // getter
 
     void setAmplitude (float amplitude) { mAmplitude = amplitude; repaint(); } // setter
     float amplitude () const { return mAmplitude; } // getter
 
-    void setPhaseShift (float phaseShift) { mPhaseShift = phaseShift; repaint(); } // setter
-    float phaseShift () const { return mPhaseShift; } // getter
+    void setPhaseShift (PiNumber phaseShift) { mPhaseShift = phaseShift; repaint(); } // setter
+    PiNumber phaseShift () const { return mPhaseShift; } // getter
 
     void setMidline (float midline) { mMidline = midline; repaint(); } // setter
     float midline () const { return mMidline; } // getter
@@ -47,6 +48,7 @@ public:
     void setNegative (bool negative) { mNegative = negative; repaint(); } // setter
     bool negative () const { return mNegative; } // getter
 
+    // May not need these next two - info is imbedded in the pinumber class.
     void setPeriodTimesPi (bool periodTimesPi) { mPeriodTimesPi = periodTimesPi; repaint(); } // setter
     bool periodTimesPi () const { return mPeriodTimesPi; } // getter
 
@@ -68,18 +70,23 @@ private:
     float mIntervalLength;
     int mStepCount;
     float mScale;
-    float mPeriod;
-    float mAmplitude;
-    float mPhaseShift;
+
+    PiNumber mPeriod; // Always positive number
+    float mAmplitude; // Always positive, with mNegative implementing x-axis reflections.
+    PiNumber mPhaseShift; // Positive or negative, but checks to keep it less than 1 whole period.
     float mMidline;
     bool mNegative;
+// These two may not be needed, incl. in pinumber class info
+// or used just as placeholders for the checkbox selection.
     bool mPeriodTimesPi;
     bool mPhaseShiftTimesPi;
+//
     static int mBuffer; // used for the buffer around the curve in the drawing area
     float mXRatio;
     float mYRatio;
     float mXAxisYValue;
     float mYAxisXValue;
+    float mXStart;
 
     void setXRatio () ;
     void setYRatio () ;

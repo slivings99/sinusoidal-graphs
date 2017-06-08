@@ -33,7 +33,7 @@ void PiNumber::setValue(float value)
         mIsFractionOfPi = true;
         mPiCoefficient = wholeNumber;
         mDenominator = 1;
-        printf ("%d π \n", wholeNumber);
+//        printf ("%d π \n", wholeNumber);
     }
     else
     {
@@ -45,10 +45,10 @@ void PiNumber::setValue(float value)
             mIsFractionOfPi = true;
             mPiCoefficient = thisNumerator + wholeNumber*thisDenominator;
             mDenominator = thisDenominator;
-            printf("%d π / %d\n", mPiCoefficient, thisDenominator);
+//            printf("%d π / %d\n", mPiCoefficient, thisDenominator);
         }
         else {
-            printf("%0.2f\n", mValue);
+//            printf("%0.2f\n", mValue);
             mIsFractionOfPi = false;
             mPiCoefficient = 0;
             mDenominator = 0;
