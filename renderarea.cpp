@@ -57,16 +57,6 @@ void RenderArea::setXRatio()
 {
     float period = mPeriod.value();
     float phaseShift = mPhaseShift.value();
-/* Not needed, pinumber class will take care of this.
-    if (mPeriodTimesPi)
-    {
-        period *= M_PI;
-    }
-    if (mPhaseShiftTimesPi)
-    {
-        phaseShift *= M_PI;
-    }
-*/
     if ((phaseShift < 0) || (phaseShift < period / 4))
     {
         mIntervalLength = 1.5 * period; // graph extra 1/4 period on each side of one cycle
@@ -98,13 +88,13 @@ void RenderArea::paintEvent(QPaintEvent *event)
     painter.setPen(mCurvePen);
 
 
-    // Test values for locateXaxis()
-    mMidline = -2.0;
-    mAmplitude = 1.0;
+//    // Test values for setYRatio()
+//    mMidline = -2.0;
+//    mAmplitude = 1.0;
 
-    // Test values for locateYaxis()
-    mPeriod.setValue(2 * M_PI);
-    mPhaseShift.setValue(- M_PI / 4);
+//    // Test values for setXRatio()
+//    mPeriod.setValue(2 * M_PI);
+//    mPhaseShift.setValue(- M_PI / 4);
 
     painter.setPen(mAxisPen);
 
@@ -156,32 +146,3 @@ void RenderArea::paintEvent(QPaintEvent *event)
     pixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
     painter.drawLine(pixel, prevPixel);
 }
-/*  THIS IS WHERE I AM, CONTINUE TO UPDATE paintEvent to paint a sine curve.
-
-    QPointF prevPoint = compute(0);
-    QPoint prevPixel;
-    prevPixel.setX(prevPoint.x() * mScale + center.x());
-    prevPixel.setY(prevPoint.y() * mScale + center.y());
-
-    float step = mIntervalLength / mStepCount;
-
-    for (float t = 0; t < mIntervalLength; t += step)
-    {
-        QPointF point = compute (t);
-
-        QPoint pixel;
-        pixel.setX(point.x() * mScale + center.x());
-        pixel.setY(point.y() * mScale + center.y());
-
-//        painter.drawPoint(pixel);
-        painter.drawLine(pixel, prevPixel);
-        prevPixel = pixel;
-    }
-    QPointF point = compute (mIntervalLength);
-
-    QPoint pixel;
-    pixel.setX(point.x() * mScale + center.x());
-    pixel.setY(point.y() * mScale + center.y());
-    painter.drawLine(pixel, prevPixel);
-}
-*/
