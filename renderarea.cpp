@@ -16,6 +16,7 @@ RenderArea::RenderArea(QWidget *parent) :
     mMidline(0)
 {
     setBackgroundColor(Qt::white);
+    functionLabel.setParent(this);
 }
 
 int RenderArea::mBuffer = 20; // 20 pixels on each side of the curve
@@ -159,9 +160,8 @@ void RenderArea::paintEvent(QPaintEvent *event)
     y = (a * sin(b * (t - c)) + d)*mYRatio;
     pixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
     painter.drawLine(pixel, prevPixel);
-    functionLabel.setParent(this);
     functionLabel.setText(functionString);
-    functionLabel.resize(100,20);
+    functionLabel.adjustSize();
     functionLabel.move(origin);
     functionLabel.show();
 }

@@ -42,7 +42,15 @@ void CreateGraphsWindow::updatePhaseShift()
 {
     float   value = this->ui->spinPhaseShift->value();
     float   period = this->ui->renderArea->period().value();
+    float   maxValue;
 
+    maxValue = period;
+    if (this->ui->checkPhaseShiftTimesPi->isChecked())
+    {
+        maxValue = maxValue / M_PI;
+    }
+    this->ui->spinPhaseShift->setMaximum(maxValue);
+    this->ui->spinPhaseShift->setMinimum(-maxValue);
     if (this->ui->checkPhaseShiftTimesPi->isChecked())
     {
         value *= M_PI;
@@ -85,7 +93,6 @@ void CreateGraphsWindow::updatePeriod()
         {
             value *= M_PI;
         }
-        this->ui->spinPhaseShift->setMaximum(value);
         PiNumber period(value);
         this->ui->renderArea->setPeriod(period);
         this->ui->renderArea->repaint();
