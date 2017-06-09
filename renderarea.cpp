@@ -7,6 +7,7 @@ RenderArea::RenderArea(QWidget *parent) :
     QWidget(parent),
     mCurvePen (Qt::darkBlue),
     mAxisPen (Qt::black),
+    mMidLinePen(Qt::black),
     mIntervalLength(M_PI),
     mStepCount(256),
     mScale (1.0),
@@ -52,6 +53,7 @@ void RenderArea::setYRatio()
         mYRatio = (float)(this->height() - 2*mBuffer) / curveHeight;
         mXAxisYValue = (int) std::round((mAmplitude + mMidline) * mYRatio) + mBuffer;
     }
+    mMidlineYValue = mXAxisYValue - std::round(mMidline*mYRatio);
 }
 
 void RenderArea::setXRatio()
@@ -112,6 +114,12 @@ void RenderArea::paintEvent(QPaintEvent *event)
     painter.drawLine(yAxisStart,yAxisEnd); // y - axis
 
     QPoint origin(mYAxisXValue,mXAxisYValue);
+
+    mMidLinePen.setStyle(Qt::DashLine);
+    painter.setPen(mMidLinePen);
+    QPoint midLineStart(0,mMidlineYValue);
+    QPoint midLineEnd(this->width(), mMidlineYValue);
+    painter.drawLine(midLineStart,midLineEnd);
 
     float a, b, c, d; // f(x) = asin(b(x-c))+d
 

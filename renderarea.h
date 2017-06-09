@@ -68,6 +68,7 @@ private:
     QColor mBackgroundColor;
     QPen mCurvePen;
     QPen mAxisPen;
+    QPen mMidLinePen;
 
     float mIntervalLength;
     int mStepCount;
@@ -86,8 +87,9 @@ private:
     static int mBuffer; // used for the buffer around the curve in the drawing area
     float mXRatio;
     float mYRatio;
-    float mXAxisYValue;
-    float mYAxisXValue;
+    int mXAxisYValue;
+    int mYAxisXValue;
+    int mMidlineYValue;
     float mXStart;
 
     void setXRatio () ;

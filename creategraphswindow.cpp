@@ -121,8 +121,11 @@ void CreateGraphsWindow::on_checkPeriodTimesPi_clicked()
 
 void CreateGraphsWindow::on_spinAmplitude_valueChanged(double amplitude)
 {
-    this->ui->renderArea->setAmplitude(amplitude);
-    this->ui->renderArea->repaint();
+    if (amplitude > 0)
+    {
+        this->ui->renderArea->setAmplitude(amplitude);
+        this->ui->renderArea->repaint();
+    }
 }
 
 void CreateGraphsWindow::on_checkNegative_stateChanged(int checkState)

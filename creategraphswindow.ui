@@ -54,6 +54,15 @@
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="spinAmplitude">
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>0.001000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
          <property name="value">
           <double>1.000000000000000</double>
          </property>
@@ -134,8 +143,11 @@
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="spinPhaseShift">
+         <property name="decimals">
+          <number>3</number>
+         </property>
          <property name="minimum">
-          <double>-99.989999999999995</double>
+          <double>-99.998999999999995</double>
          </property>
         </widget>
        </item>
@@ -168,6 +180,9 @@
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="spinMidline">
+         <property name="decimals">
+          <number>3</number>
+         </property>
          <property name="minimum">
           <double>-99.989999999999995</double>
          </property>
