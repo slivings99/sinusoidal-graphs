@@ -28,7 +28,7 @@ void CreateGraphsWindow::on_btnResetDefaults_clicked()
     this->ui->spinPeriod->setValue(2);
     this->ui->checkPeriodTimesPi->setChecked(true);
     this->ui->spinPhaseShift->setValue(0);
-    this->ui->checkPhaseShiftTimesPi->setChecked(true);
+    this->ui->checkPhaseShiftTimesPi->setChecked(false);
     this->ui->renderArea->repaint();
 }
 

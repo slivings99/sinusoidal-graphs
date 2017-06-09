@@ -79,7 +79,18 @@ QString PiNumber::displayValue()
     QString output;
     if (mIsFractionOfPi)
     {
-        output = QString("Hello");
+        if (mPiCoefficient != 1)
+        {
+            output = QString("%1 π").arg(mPiCoefficient);
+        }
+        else
+        {
+            output = QString("π");
+        }
+        if (mDenominator != 1)
+        {
+            output.append(QString(" / %1").arg(mDenominator));
+        }
     }
     else
     {

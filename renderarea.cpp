@@ -151,10 +151,31 @@ void RenderArea::paintEvent(QPaintEvent *event)
     PiNumber cPi(c);
     if (b != 1.0)
     {
-        functionString.append(bPi.displayValue());
+        functionString.append(QString("(%1)").arg(bPi.displayValue()));
+        functionString.append("(");
     }
+    functionString.append("x");
+    if (c != 0)
+    {   if (c > 0)
+        {
+            functionString.append("+");
+        }
+        functionString.append(cPi.displayValue());
+    }
+    if (b!= 1.0)
+    {
+        functionString.append(")");
+    }
+    functionString.append(")");
     d = mMidline;
-
+    if (d > 0)
+    {
+        functionString.append("+");
+    }
+    if (d != 0)
+    {
+        functionString.append(QString::number(d));
+    }
     float y = (a * sin(b * (mXStart - c)) + d)*mYRatio;
     QPoint prevPixel;
     prevPixel.setX(mBuffer);
@@ -180,6 +201,6 @@ void RenderArea::paintEvent(QPaintEvent *event)
     painter.drawLine(pixel, prevPixel);
     functionLabel.setText(functionString);
     functionLabel.adjustSize();
-    functionLabel.move(origin);
+    functionLabel.move(origin.x()+2,0);
     functionLabel.show();
 }
