@@ -35,7 +35,7 @@ void CreateGraphsWindow::on_btnResetDefaults_clicked()
 void CreateGraphsWindow::on_spinMidline_valueChanged(double midline)
 {
     this->ui->renderArea->setMidline(midline);
-    this->ui->renderArea->repaint();
+//    this->ui->renderArea->repaint();
 }
 
 void CreateGraphsWindow::updatePhaseShift()
@@ -67,7 +67,7 @@ void CreateGraphsWindow::updatePhaseShift()
     }
     PiNumber phaseShift(value);
     this->ui->renderArea->setPhaseShift(phaseShift);
-    this->ui->renderArea->repaint();
+//    this->ui->renderArea->repaint();
 }
 
 void CreateGraphsWindow::on_spinPhaseShift_valueChanged(double value)
@@ -107,7 +107,7 @@ void CreateGraphsWindow::updatePeriod()
         }
         else
         {
-            this->ui->renderArea->repaint();
+//            this->ui->renderArea->repaint();
         }
     }
 }
@@ -136,13 +136,23 @@ void CreateGraphsWindow::on_spinAmplitude_valueChanged(double amplitude)
     if (amplitude > 0)
     {
         this->ui->renderArea->setAmplitude(amplitude);
-        this->ui->renderArea->repaint();
+//        this->ui->renderArea->repaint();
     }
 }
 
 void CreateGraphsWindow::on_checkNegative_stateChanged(int checkState)
 {
     this->ui->renderArea->setNegative(checkState == Qt::Checked);
-    this->ui->renderArea->repaint();
+//    this->ui->renderArea->repaint();
 }
 
+
+void CreateGraphsWindow::on_radioSine_clicked()
+{
+    this->ui->renderArea->setFunctionType(RenderArea::FunctSine);
+}
+
+void CreateGraphsWindow::on_radioCosine_clicked()
+{
+    this->ui->renderArea->setFunctionType(RenderArea::FunctCosine);
+}

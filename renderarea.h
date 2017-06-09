@@ -12,6 +12,11 @@ class RenderArea : public QWidget
 {
     Q_OBJECT
 public:
+    enum FunctionType {
+        FunctSine,
+        FunctCosine
+    };
+
     explicit RenderArea(QWidget *parent = 0);
 
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
@@ -49,6 +54,9 @@ public:
 
     void setNegative (bool negative) { mNegative = negative; repaint(); } // setter
     bool negative () const { return mNegative; } // getter
+
+    void setFunctionType (FunctionType function) { mFunction = function; repaint(); }
+    FunctionType functionType () const {return mFunction;}
 
     // May not need these next two - info is imbedded in the pinumber class.
 //    void setPeriodTimesPi (bool periodTimesPi) { mPeriodTimesPi = periodTimesPi; repaint(); } // setter
@@ -91,9 +99,11 @@ private:
     int mYAxisXValue;
     int mMidlineYValue;
     float mXStart;
+    FunctionType mFunction;
 
     void setXRatio () ;
     void setYRatio () ;
+    float calculate (float t, float a, float b, float c, float d);
     QLabel functionLabel;
     QString functionString;
 };

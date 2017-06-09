@@ -38,6 +38,10 @@ private slots:
 
     void on_checkPeriodTimesPi_stateChanged(int arg1);
 
+    void on_radioSine_clicked();
+
+    void on_radioCosine_clicked();
+
 private:
     void updatePeriod();
     void updatePhaseShift();

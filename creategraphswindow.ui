@@ -22,22 +22,45 @@
        <verstretch>1</verstretch>
       </sizepolicy>
      </property>
+     <zorder></zorder>
     </widget>
    </item>
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="btnCreateGraph">
-       <property name="text">
-        <string>Create Graph</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="btnResetDefaults">
        <property name="text">
         <string>Reset Defaults</string>
        </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupFunctionSelection">
+       <property name="title">
+        <string>Function Selection:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignHCenter|Qt::AlignTop</set>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QRadioButton" name="radioSine">
+          <property name="text">
+           <string>Sine</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioCosine">
+          <property name="text">
+           <string>Cosine</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>

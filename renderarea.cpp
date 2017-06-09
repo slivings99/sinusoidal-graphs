@@ -21,7 +21,8 @@ RenderArea::RenderArea(QWidget *parent) :
     mXAxisYValue(0),
     mYAxisXValue(0),
     mMidlineYValue(0),
-    mXStart(0)
+    mXStart(0),
+    mFunction(FunctSine)
 {
     setBackgroundColor(Qt::white);
     functionLabel.setParent(this);
@@ -61,7 +62,7 @@ void RenderArea::setYRatio()
         mYRatio = (float)(this->height() - 2*mBuffer) / curveHeight;
         mXAxisYValue = (int) std::round((mAmplitude + mMidline) * mYRatio) + mBuffer;
     }
-    mMidlineYValue = mXAxisYValue - std::round(mMidline*mYRatio);
+    mMidlineYValue = mXAxisYValue - (int) std::round(mMidline*mYRatio);
 }
 
 void RenderArea::setXRatio()
@@ -84,6 +85,28 @@ void RenderArea::setXRatio()
     }
 }
 
+float RenderArea::calculate(float t,
+                            float a,
+                            float b,
+                            float c,
+                            float d)
+{
+    float y;
+
+    switch (mFunction)
+    {
+    case FunctSine:
+        y = (a * sin(b * (t - c)) + d)*mYRatio;
+        break;
+    case FunctCosine:
+        y = (a * cos(b * (t - c)) + d)*mYRatio;
+        break;
+    default:
+        y = t*mYRatio;
+        break;
+    }
+    return (y);
+}
 
 void RenderArea::paintEvent(QPaintEvent *event)
 {
@@ -107,15 +130,14 @@ void RenderArea::paintEvent(QPaintEvent *event)
 //    mPeriod.setValue(2 * M_PI);
 //    mPhaseShift.setValue(- M_PI / 4);
 
-    painter.setPen(mAxisPen);
-
     setXRatio();
+    setYRatio();
+
+    painter.setPen(mAxisPen);
 
     QPoint xAxisStart(0,mXAxisYValue);
     QPoint xAxisEnd(this->width(), mXAxisYValue);
     painter.drawLine(xAxisStart,xAxisEnd); // x - axis
-
-    setYRatio();
 
     QPoint yAxisStart(mYAxisXValue,0);
     QPoint yAxisEnd(mYAxisXValue,this->height());
@@ -129,6 +151,7 @@ void RenderArea::paintEvent(QPaintEvent *event)
         QPoint midLineStart(0,mMidlineYValue);
         QPoint midLineEnd(this->width(), mMidlineYValue);
         painter.drawLine(midLineStart, midLineEnd);
+        painter.setPen(mAxisPen);
     }
 
     float a, b, c, d; // f(x) = asin(b(x-c))+d
@@ -144,7 +167,18 @@ void RenderArea::paintEvent(QPaintEvent *event)
     {
         functionString.append(QString::number(std::abs(a)));
     }
-    functionString.append("sin(");
+    switch (mFunction)
+    {
+    case FunctSine:
+        functionString.append("sin(");
+        break;
+    case FunctCosine:
+        functionString.append("cos(");
+        break;
+    default:
+        break;
+    }
+
     b = 2 * M_PI / mPeriod.value();
     PiNumber bPi(b);
     c = mPhaseShift.value();
@@ -176,7 +210,7 @@ void RenderArea::paintEvent(QPaintEvent *event)
     {
         functionString.append(QString::number(d));
     }
-    float y = (a * sin(b * (mXStart - c)) + d)*mYRatio;
+    float y = calculate(mXStart,a,b,c,d);
     QPoint prevPixel;
     prevPixel.setX(mBuffer);
     prevPixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
@@ -187,7 +221,7 @@ void RenderArea::paintEvent(QPaintEvent *event)
     for (float t = mXStart; t < (mIntervalLength + mXStart); t+=step)
     {
         QPoint pixel;
-        y = (a * sin(b * (t - c)) + d)*mYRatio;
+        y = calculate(t,a,b,c,d);
         pixel.setX(t*mXRatio + origin.x());
         pixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
         painter.drawLine(pixel, prevPixel);
@@ -196,7 +230,8 @@ void RenderArea::paintEvent(QPaintEvent *event)
     QPoint pixel;
     float t = mIntervalLength + mXStart;
     pixel.setX(t*mXRatio + origin.x());
-    y = (a * sin(b * (t - c)) + d)*mYRatio;
+    y = calculate(t,a,b,c,d);
+
     pixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
     painter.drawLine(pixel, prevPixel);
     functionLabel.setText(functionString);
