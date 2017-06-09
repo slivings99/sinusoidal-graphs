@@ -18,6 +18,7 @@ RenderArea::RenderArea(QWidget *parent) :
 {
     setBackgroundColor(Qt::white);
     functionLabel.setParent(this);
+    mMidLinePen.setStyle(Qt::DashLine);
 }
 
 int RenderArea::mBuffer = 20; // 20 pixels on each side of the curve
@@ -115,11 +116,13 @@ void RenderArea::paintEvent(QPaintEvent *event)
 
     QPoint origin(mYAxisXValue,mXAxisYValue);
 
-    mMidLinePen.setStyle(Qt::DashLine);
-    painter.setPen(mMidLinePen);
-    QPoint midLineStart(0,mMidlineYValue);
-    QPoint midLineEnd(this->width(), mMidlineYValue);
-    painter.drawLine(midLineStart,midLineEnd);
+    if (mMidlineYValue != mXAxisYValue)
+    {
+        painter.setPen(mMidLinePen);
+        QPoint midLineStart(0,mMidlineYValue);
+        QPoint midLineEnd(this->width(), mMidlineYValue);
+        painter.drawLine(midLineStart, midLineEnd);
+    }
 
     float a, b, c, d; // f(x) = asin(b(x-c))+d
 

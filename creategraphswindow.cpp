@@ -58,6 +58,12 @@ void CreateGraphsWindow::updatePhaseShift()
     if (value >= period)
     {
         value = std::fmod(value,period);
+        float updateUIValue = value;
+        if (this->ui->checkPhaseShiftTimesPi->isChecked())
+        {
+            updateUIValue = updateUIValue / M_PI;
+        }
+        this->ui->spinPhaseShift->setValue(updateUIValue);
     }
     PiNumber phaseShift(value);
     this->ui->renderArea->setPhaseShift(phaseShift);
@@ -95,9 +101,15 @@ void CreateGraphsWindow::updatePeriod()
         }
         PiNumber period(value);
         this->ui->renderArea->setPeriod(period);
-        this->ui->renderArea->repaint();
+        if (this->ui->renderArea->phaseShift().value() > value)
+        {
+            updatePhaseShift();
+        }
+        else
+        {
+            this->ui->renderArea->repaint();
+        }
     }
-
 }
 
 void CreateGraphsWindow::on_spinPeriod_valueChanged(double value)
