@@ -51,11 +51,11 @@ public:
     bool negative () const { return mNegative; } // getter
 
     // May not need these next two - info is imbedded in the pinumber class.
-    void setPeriodTimesPi (bool periodTimesPi) { mPeriodTimesPi = periodTimesPi; repaint(); } // setter
-    bool periodTimesPi () const { return mPeriodTimesPi; } // getter
+//    void setPeriodTimesPi (bool periodTimesPi) { mPeriodTimesPi = periodTimesPi; repaint(); } // setter
+//    bool periodTimesPi () const { return mPeriodTimesPi; } // getter
 
-    void setPhaseShiftTimesPi (bool phaseShiftTimesPi) { mPhaseShiftTimesPi = phaseShiftTimesPi; repaint(); } // setter
-    bool phaseShiftTimesPi () const { return mPhaseShiftTimesPi; } // getter
+//    void setPhaseShiftTimesPi (bool phaseShiftTimesPi) { mPhaseShiftTimesPi = phaseShiftTimesPi; repaint(); } // setter
+//    bool phaseShiftTimesPi () const { return mPhaseShiftTimesPi; } // getter
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -81,8 +81,8 @@ private:
     bool mNegative;
 // These two may not be needed, incl. in pinumber class info
 // or used just as placeholders for the checkbox selection.
-    bool mPeriodTimesPi;
-    bool mPhaseShiftTimesPi;
+//    bool mPeriodTimesPi;
+//    bool mPhaseShiftTimesPi;
 //
     static int mBuffer; // used for the buffer around the curve in the drawing area
     float mXRatio;

@@ -29,3 +29,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     creategraphswindow.ui
+
+DISTFILES += \
+    README.md

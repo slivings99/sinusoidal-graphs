@@ -14,7 +14,14 @@ RenderArea::RenderArea(QWidget *parent) :
     mPeriod(2*M_PI),
     mAmplitude(1),
     mPhaseShift(0),
-    mMidline(0)
+    mMidline(0),
+    mNegative(false),
+    mXRatio(1),
+    mYRatio(1),
+    mXAxisYValue(0),
+    mYAxisXValue(0),
+    mMidlineYValue(0),
+    mXStart(0)
 {
     setBackgroundColor(Qt::white);
     functionLabel.setParent(this);
@@ -135,7 +142,7 @@ void RenderArea::paintEvent(QPaintEvent *event)
     }
     if (std::abs(a) != 1.0)
     {
-        functionString.append(QString::number(a));
+        functionString.append(QString::number(std::abs(a)));
     }
     functionString.append("sin(");
     b = 2 * M_PI / mPeriod.value();
