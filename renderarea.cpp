@@ -1,6 +1,4 @@
 #include "renderarea.h"
-#include <QPaintEvent>
-#include <QPainter>
 #include <cmath>
 
 RenderArea::RenderArea(QWidget *parent) :
@@ -18,6 +16,7 @@ RenderArea::RenderArea(QWidget *parent) :
     mNegative(false),
     mXRatio(1),
     mYRatio(1),
+    mOrigin(0,0),
     mXAxisYValue(0),
     mYAxisXValue(0),
     mMidlineYValue(0),
@@ -108,11 +107,38 @@ float RenderArea::calculate(float t,
     return (y);
 }
 
+void RenderArea::displayCurve(QPainter *painter, float a, float b, float c, float d)
+{
+    float y = calculate(mXStart,a,b,c,d);
+    QPoint prevPixel;
+    prevPixel.setX(mBuffer);
+    prevPixel.setY(mOrigin.y() - y); // subtract y because y = 0 at the top of the screen
+    float step = mIntervalLength / mStepCount;
+
+
+    for (float t = mXStart; t < (mIntervalLength + mXStart); t+=step)
+    {
+        QPoint pixel;
+        y = calculate(t,a,b,c,d);
+        pixel.setX(t*mXRatio + mOrigin.x());
+        pixel.setY(mOrigin.y() - y); // subtract y because y = 0 at the top of the screen
+        painter->drawLine(pixel, prevPixel);
+        prevPixel = pixel;
+    }
+    QPoint pixel;
+    float t = mIntervalLength + mXStart;
+    pixel.setX(t*mXRatio + mOrigin.x());
+    y = calculate(t,a,b,c,d);
+
+    pixel.setY(mOrigin.y() - y); // subtract y because y = 0 at the top of the screen
+    painter->drawLine(pixel, prevPixel);
+}
+
 void RenderArea::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    QPainter painter(this);
+    QPainter    painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
     painter.setBrush(mBackgroundColor);
@@ -143,7 +169,8 @@ void RenderArea::paintEvent(QPaintEvent *event)
     QPoint yAxisEnd(mYAxisXValue,this->height());
     painter.drawLine(yAxisStart,yAxisEnd); // y - axis
 
-    QPoint origin(mYAxisXValue,mXAxisYValue);
+    mOrigin.setX(mYAxisXValue);
+    mOrigin.setY(mXAxisYValue);
 
     if (mMidlineYValue != mXAxisYValue)
     {
@@ -210,32 +237,18 @@ void RenderArea::paintEvent(QPaintEvent *event)
     {
         functionString.append(QString::number(d));
     }
-    float y = calculate(mXStart,a,b,c,d);
-    QPoint prevPixel;
-    prevPixel.setX(mBuffer);
-    prevPixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
-    float step = mIntervalLength / mStepCount;
-
+// Display the primary function graph
     painter.setPen(mCurvePen);
-
-    for (float t = mXStart; t < (mIntervalLength + mXStart); t+=step)
+    displayCurve(&painter, a,b,c,d);
+    if (showParentFunction())
     {
-        QPoint pixel;
-        y = calculate(t,a,b,c,d);
-        pixel.setX(t*mXRatio + origin.x());
-        pixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
-        painter.drawLine(pixel, prevPixel);
-        prevPixel = pixel;
+        painter.setPen(mAxisPen);
+        displayCurve(&painter, 1, 1, 0, 0);
+        painter.setPen(mCurvePen);
     }
-    QPoint pixel;
-    float t = mIntervalLength + mXStart;
-    pixel.setX(t*mXRatio + origin.x());
-    y = calculate(t,a,b,c,d);
 
-    pixel.setY(origin.y() - y); // subtract y because y = 0 at the top of the screen
-    painter.drawLine(pixel, prevPixel);
     functionLabel.setText(functionString);
     functionLabel.adjustSize();
-    functionLabel.move(origin.x()+2,0);
+    functionLabel.move(mOrigin.x()+2,0);
     functionLabel.show();
 }

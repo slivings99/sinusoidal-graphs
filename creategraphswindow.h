@@ -42,6 +42,8 @@ private slots:
 
     void on_radioCosine_clicked();
 
+    void on_checkParentFunction_clicked(bool checked);
+
 private:
     void updatePeriod();
     void updatePhaseShift();

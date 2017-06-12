@@ -6,6 +6,8 @@
 #include <QPen>
 #include <QLabel>
 #include <QString>
+#include <QPaintEvent>
+#include <QPainter>
 #include "pinumber.h"
 
 class RenderArea : public QWidget
@@ -55,6 +57,9 @@ public:
     void setNegative (bool negative) { mNegative = negative; repaint(); } // setter
     bool negative () const { return mNegative; } // getter
 
+    void setShowParentFunction (bool showParent) { mShowParentFunction = showParent; repaint(); } // setter
+    bool showParentFunction () const { return mShowParentFunction; } // getter
+
     void setFunctionType (FunctionType function) { mFunction = function; repaint(); }
     FunctionType functionType () const {return mFunction;}
 
@@ -87,14 +92,13 @@ private:
     PiNumber mPhaseShift; // Positive or negative, but checks to keep it less than 1 whole period.
     float mMidline;
     bool mNegative;
-// These two may not be needed, incl. in pinumber class info
-// or used just as placeholders for the checkbox selection.
-//    bool mPeriodTimesPi;
-//    bool mPhaseShiftTimesPi;
-//
+
+    bool mShowParentFunction;
+
     static int mBuffer; // used for the buffer around the curve in the drawing area
     float mXRatio;
     float mYRatio;
+    QPoint mOrigin;
     int mXAxisYValue;
     int mYAxisXValue;
     int mMidlineYValue;
@@ -104,6 +108,7 @@ private:
     void setXRatio () ;
     void setYRatio () ;
     float calculate (float t, float a, float b, float c, float d);
+    void displayCurve (QPainter *painter, float a, float b, float c, float d);
     QLabel functionLabel;
     QString functionString;
 };

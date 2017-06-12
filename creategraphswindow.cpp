@@ -156,3 +156,8 @@ void CreateGraphsWindow::on_radioCosine_clicked()
 {
     this->ui->renderArea->setFunctionType(RenderArea::FunctCosine);
 }
+
+void CreateGraphsWindow::on_checkParentFunction_clicked(bool showParent)
+{
+    this->ui->renderArea->setShowParentFunction(showParent);
+}
