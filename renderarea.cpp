@@ -14,6 +14,7 @@ RenderArea::RenderArea(QWidget *parent) :
     mPhaseShift(0),
     mMidline(0),
     mNegative(false),
+    mShowParentFunction(false),
     mXRatio(1),
     mYRatio(1),
     mOrigin(0,0),
