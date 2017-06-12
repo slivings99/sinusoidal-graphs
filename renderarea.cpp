@@ -26,6 +26,14 @@ RenderArea::RenderArea(QWidget *parent) :
 {
     setBackgroundColor(Qt::white);
     functionLabel.setParent(this);
+    midlineLabel.setParent(this);
+    maximumLabel.setParent(this);
+    minimumLabel.setParent(this);
+    for (int x = 0; x < 7; x++)
+    {
+        xLabels[x] = new QLabel(this);
+    }
+    phaseShiftLabel.setParent(this);
     mMidLinePen.setStyle(Qt::DashLine);
 }
 
@@ -146,7 +154,7 @@ void RenderArea::paintEvent(QPaintEvent *event)
     // Drawing area
     painter.drawRect(this->rect());
 
-    painter.setPen(mCurvePen);
+//    painter.setPen(mCurvePen);
 
 
 //    // Test values for setYRatio()
@@ -173,13 +181,59 @@ void RenderArea::paintEvent(QPaintEvent *event)
     mOrigin.setX(mYAxisXValue);
     mOrigin.setY(mXAxisYValue);
 
+    // Set up some y axis labels:
+    QPoint labelStart(mYAxisXValue-3,mOrigin.y());
+    QPoint labelEnd(mYAxisXValue+3,mOrigin.y());
     if (mMidlineYValue != mXAxisYValue)
     {
+        // Draw mid-line as a dashed line
         painter.setPen(mMidLinePen);
         QPoint midLineStart(0,mMidlineYValue);
         QPoint midLineEnd(this->width(), mMidlineYValue);
         painter.drawLine(midLineStart, midLineEnd);
-        painter.setPen(mAxisPen);
+        // Label y axis with midline value:
+        labelStart.setY(mMidlineYValue);
+        labelEnd.setY(mMidlineYValue);
+        painter.drawLine(labelStart, labelEnd);
+        midlineLabel.setText(QString("y = %1").arg(mMidline));
+        midlineLabel.adjustSize();
+        midlineLabel.move(mYAxisXValue+1,mMidlineYValue+1);
+        midlineLabel.show();
+    }
+    // Label y axis with minimum and maximum values:
+    painter.setPen(mAxisPen);
+    int minimumYValue = mMidlineYValue + (int) std::round(mAmplitude*mYRatio);
+    labelStart.setY(minimumYValue);
+    labelEnd.setY(minimumYValue);
+    painter.drawLine(labelStart, labelEnd);
+    minimumLabel.setText(QString("%1").number(mMidline-mAmplitude));
+    minimumLabel.adjustSize();
+    minimumLabel.move(mYAxisXValue+4,minimumYValue - 2);
+    minimumLabel.show();
+    int maximumYValue = mMidlineYValue - (int) std::round(mAmplitude*mYRatio);
+    labelStart.setY(maximumYValue);
+    labelEnd.setY(maximumYValue);
+    painter.drawLine(labelStart, labelEnd);
+    maximumLabel.setText(QString("%1").number(mMidline+mAmplitude));
+    maximumLabel.adjustSize();
+    maximumLabel.move(mYAxisXValue+4,maximumYValue - 2);
+    maximumLabel.show();
+
+    // Label x axis with quarter period values:
+    for (int xValue = 0; xValue < 7; xValue++)
+    {
+        float t = mXStart + (mPeriod.value()*0.25)*(float)xValue;
+        int xPixelValue = mBuffer + ((this->width()-2*mBuffer)/6)*xValue;
+        PiNumber xDisplayValue(t);
+        labelStart.setX(xPixelValue);
+        labelStart.setY(mXAxisYValue - 3);
+        labelEnd.setX(xPixelValue);
+        labelEnd.setY(mXAxisYValue + 3);
+        painter.drawLine(labelStart, labelEnd);
+        xLabels[xValue]->setText(QString("%1").arg(xDisplayValue.displayValue()));
+        xLabels[xValue]->adjustSize();
+        xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width()/2,mXAxisYValue + 4);
+        xLabels[xValue]->show();
     }
 
     float a, b, c, d; // f(x) = asin(b(x-c))+d

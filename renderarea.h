@@ -63,13 +63,6 @@ public:
     void setFunctionType (FunctionType function) { mFunction = function; repaint(); }
     FunctionType functionType () const {return mFunction;}
 
-    // May not need these next two - info is imbedded in the pinumber class.
-//    void setPeriodTimesPi (bool periodTimesPi) { mPeriodTimesPi = periodTimesPi; repaint(); } // setter
-//    bool periodTimesPi () const { return mPeriodTimesPi; } // getter
-
-//    void setPhaseShiftTimesPi (bool phaseShiftTimesPi) { mPhaseShiftTimesPi = phaseShiftTimesPi; repaint(); } // setter
-//    bool phaseShiftTimesPi () const { return mPhaseShiftTimesPi; } // getter
-
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
@@ -110,6 +103,11 @@ private:
     float calculate (float t, float a, float b, float c, float d);
     void displayCurve (QPainter *painter, float a, float b, float c, float d);
     QLabel functionLabel;
+    QLabel midlineLabel;
+    QLabel maximumLabel;
+    QLabel minimumLabel;
+    QLabel *xLabels[7];
+    QLabel phaseShiftLabel;
     QString functionString;
 };
 
