@@ -200,24 +200,43 @@ void RenderArea::paintEvent(QPaintEvent *event)
         midlineLabel.move(mYAxisXValue+1,mMidlineYValue+1);
         midlineLabel.show();
     }
+    else
+    {
+        midlineLabel.hide();
+    }
     // Label y axis with minimum and maximum values:
     painter.setPen(mAxisPen);
     int minimumYValue = mMidlineYValue + (int) std::round(mAmplitude*mYRatio);
-    labelStart.setY(minimumYValue);
-    labelEnd.setY(minimumYValue);
-    painter.drawLine(labelStart, labelEnd);
-    minimumLabel.setText(QString("%1").number(mMidline-mAmplitude));
-    minimumLabel.adjustSize();
-    minimumLabel.move(mYAxisXValue+4,minimumYValue - 2);
-    minimumLabel.show();
+    if (minimumYValue != mXAxisYValue) // Only display this value if other than at the origin.
+    {
+        labelStart.setY(minimumYValue);
+        labelEnd.setY(minimumYValue);
+        painter.drawLine(labelStart, labelEnd);
+        // y axis labels are to the left of the y axis and centered on their y values.
+        minimumLabel.setText(QString("%1").number(mMidline-mAmplitude));
+        minimumLabel.adjustSize();
+        minimumLabel.move(mYAxisXValue - minimumLabel.size().width() - 2, minimumYValue - minimumLabel.size().height()/2);
+        minimumLabel.show();
+    }
+    else
+    {
+        minimumLabel.hide();
+    }
     int maximumYValue = mMidlineYValue - (int) std::round(mAmplitude*mYRatio);
-    labelStart.setY(maximumYValue);
-    labelEnd.setY(maximumYValue);
-    painter.drawLine(labelStart, labelEnd);
-    maximumLabel.setText(QString("%1").number(mMidline+mAmplitude));
-    maximumLabel.adjustSize();
-    maximumLabel.move(mYAxisXValue+4,maximumYValue - 2);
-    maximumLabel.show();
+    if (maximumYValue != mXAxisYValue) // Only display this value if other than at the origin.
+    {
+        labelStart.setY(maximumYValue);
+        labelEnd.setY(maximumYValue);
+        painter.drawLine(labelStart, labelEnd);
+        maximumLabel.setText(QString("%1").number(mMidline+mAmplitude));
+        maximumLabel.adjustSize();
+        maximumLabel.move(mYAxisXValue - maximumLabel.size().width() - 2, maximumYValue - maximumLabel.size().height()/2);
+        maximumLabel.show();
+    }
+    else
+    {
+        maximumLabel.hide();
+    }
 
     // Label x axis with quarter period values:
     for (int xValue = 0; xValue < 7; xValue++)
@@ -232,7 +251,18 @@ void RenderArea::paintEvent(QPaintEvent *event)
         painter.drawLine(labelStart, labelEnd);
         xLabels[xValue]->setText(QString("%1").arg(xDisplayValue.displayValue()));
         xLabels[xValue]->adjustSize();
-        xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width()/2,mXAxisYValue + 4);
+        switch (xValue)
+        {
+        case (0): // left most label needs to be right aligned.
+            xLabels[xValue]->move(xPixelValue - mBuffer, mXAxisYValue + 4);
+            break;
+        case(6): // right most label needs to be left aligned.
+            xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width() + mBuffer, mXAxisYValue + 4);
+            break;
+        default: // All others are centered.
+            xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width()/2,mXAxisYValue + 4);
+            break;
+        }
         xLabels[xValue]->show();
     }
 
