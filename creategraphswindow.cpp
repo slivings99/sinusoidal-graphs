@@ -29,7 +29,7 @@ void CreateGraphsWindow::on_btnResetDefaults_clicked()
     this->ui->checkPeriodTimesPi->setChecked(true);
     this->ui->spinPhaseShift->setValue(0);
     this->ui->checkPhaseShiftTimesPi->setChecked(false);
-    this->ui->renderArea->repaint();
+    this->ui->renderArea->update();
 }
 
 void CreateGraphsWindow::on_spinMidline_valueChanged(double midline)

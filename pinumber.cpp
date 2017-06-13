@@ -39,6 +39,10 @@ void PiNumber::setValue(float value)
     {
         mIsFractionOfPi = true;
         mPiCoefficient = wholeNumber;
+        if (value < 0)  // take into account the negative input here at the end.
+        {
+            mPiCoefficient = (-1)*mPiCoefficient;
+        }
         mDenominator = 1;
         if (mRunTest)
         {

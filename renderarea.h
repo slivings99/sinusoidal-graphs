@@ -33,34 +33,34 @@ public:
     void setAxisColor (QColor color) { mAxisPen.setColor(color); } // setter
     QColor axisColor () const { return mAxisPen.color(); } // getter
 
-    void setScale (float scale) { mScale = scale; repaint(); } // setter
-    float scale () const { return mScale; } // getter
+//    void setScale (float scale) { mScale = scale; repaint(); } // setter
+//    float scale () const { return mScale; } // getter
 
-    void setInterval (float interval) { mIntervalLength = interval; repaint(); } // setter
+    void setInterval (float interval) { mIntervalLength = interval; update(); } // setter
     float interval () const { return mIntervalLength; } // getter
 
-    void setStepCount (int stepCount) { mStepCount = stepCount; repaint(); } // setter
+    void setStepCount (int stepCount) { mStepCount = stepCount; update(); } // setter
     int stepCount () const { return mStepCount; } // getter
 
-    void setPeriod (PiNumber period) { mPeriod = period; repaint(); } // setter
+    void setPeriod (PiNumber period) { mPeriod = period; update(); } // setter
     PiNumber period () const { return mPeriod; } // getter
 
-    void setAmplitude (float amplitude) { mAmplitude = amplitude; repaint(); } // setter
+    void setAmplitude (float amplitude) { mAmplitude = amplitude; update(); } // setter
     float amplitude () const { return mAmplitude; } // getter
 
-    void setPhaseShift (PiNumber phaseShift) { mPhaseShift = phaseShift; repaint(); } // setter
+    void setPhaseShift (PiNumber phaseShift) { mPhaseShift = phaseShift; update(); } // setter
     PiNumber phaseShift () const { return mPhaseShift; } // getter
 
-    void setMidline (float midline) { mMidline = midline; repaint(); } // setter
+    void setMidline (float midline) { mMidline = midline; update(); } // setter
     float midline () const { return mMidline; } // getter
 
-    void setNegative (bool negative) { mNegative = negative; repaint(); } // setter
+    void setNegative (bool negative) { mNegative = negative; update(); } // setter
     bool negative () const { return mNegative; } // getter
 
-    void setShowParentFunction (bool showParent) { mShowParentFunction = showParent; repaint(); } // setter
+    void setShowParentFunction (bool showParent) { mShowParentFunction = showParent; update(); } // setter
     bool showParentFunction () const { return mShowParentFunction; } // getter
 
-    void setFunctionType (FunctionType function) { mFunction = function; repaint(); }
+    void setFunctionType (FunctionType function) { mFunction = function; update(); }
     FunctionType functionType () const {return mFunction;}
 
 protected:
@@ -78,7 +78,7 @@ private:
 
     float mIntervalLength;
     int mStepCount;
-    float mScale;
+//    float mScale;
 
     PiNumber mPeriod; // Always positive number
     float mAmplitude; // Always positive, with mNegative implementing x-axis reflections.

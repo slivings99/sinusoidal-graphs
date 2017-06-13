@@ -8,7 +8,7 @@ RenderArea::RenderArea(QWidget *parent) :
     mMidLinePen(Qt::black),
     mIntervalLength(M_PI),
     mStepCount(256),
-    mScale (1.0),
+//    mScale (1.0),
     mPeriod(2*M_PI),
     mAmplitude(1),
     mPhaseShift(0),
