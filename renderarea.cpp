@@ -334,6 +334,13 @@ void RenderArea::paintEvent(QPaintEvent *event)
 
     functionLabel.setText(functionString);
     functionLabel.adjustSize();
-    functionLabel.move(mOrigin.x()+2,0);
+    if (mOrigin.x() > this->width()/2) // Function label to the left of y-axis
+    {
+        functionLabel.move(mOrigin.x() - functionLabel.size().width() - 2, 0);
+    }
+    else // Function label to the right of y-axis.
+    {
+        functionLabel.move(mOrigin.x()+2,0);
+    }
     functionLabel.show();
 }
