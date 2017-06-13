@@ -12,7 +12,7 @@ public:
 
 private:
     PiNumber    mPiNumber;
-    std::array<float, 18> testValues
+    std::array<float, 21> testValues
     { {
         3 * M_PI,
         3.2,    // not a multiple of pi
@@ -31,7 +31,10 @@ private:
         3.0,
         4.0,
         0.5,
-        0.25
+        0.25,
+        -M_PI/3,
+        -2 * M_PI,
+        -2 * M_PI/3
     } };
 };
 

@@ -24,16 +24,16 @@ void PiNumber::setRunTest(bool runTest)
 void PiNumber::setValue(float value)
 {
     int thisNumerator, thisDenominator = 0;
-    float   piRatio = value / M_PI;
+    float   piRatio = std::abs(value) / M_PI; // piRatio starts as positive
     int wholeNumber = 0;
 
     mValue = value;
 
     // Extract the whole number part.
-    while (piRatio >= 1.0f)
+    if (piRatio >= 1.0f)
     {
-        piRatio -= 1.0f;
-        wholeNumber += 1;
+        wholeNumber = std::trunc(piRatio);
+        piRatio = piRatio - (float) wholeNumber;
     }
     if (piRatio == 0.0f)
     {
@@ -57,6 +57,10 @@ void PiNumber::setValue(float value)
             mIsFractionOfPi = true;
             mPiCoefficient = thisNumerator + wholeNumber*thisDenominator;
             mDenominator = thisDenominator;
+            if (value < 0)  // take into account the negative input here at the end.
+            {
+                mPiCoefficient = (-1)*mPiCoefficient;
+            }
             if (mRunTest)
             {
                 printf("Fraction: %d π / %d\n", mPiCoefficient, thisDenominator);
@@ -79,13 +83,20 @@ QString PiNumber::displayValue()
     QString output;
     if (mIsFractionOfPi)
     {
-        if (mPiCoefficient != 1)
+        if (std::abs(mPiCoefficient) != 1)
         {
             output = QString("%1 π").arg(mPiCoefficient);
         }
         else
         {
-            output = QString("π");
+            if (mPiCoefficient < 0)
+            {
+                output = QString ("-π");
+            }
+            else
+            {
+                output = QString("π");
+            }
         }
         if (mDenominator != 1)
         {
@@ -94,7 +105,7 @@ QString PiNumber::displayValue()
     }
     else
     {
-        output = QString("%1").arg(mValue);
+        output = QString("%1").arg(QString::number(mValue,'f', 3));
     }
     return(output);
 }
