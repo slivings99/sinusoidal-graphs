@@ -8,7 +8,6 @@ RenderArea::RenderArea(QWidget *parent) :
     mMidLinePen(Qt::black),
     mIntervalLength(M_PI),
     mStepCount(256),
-//    mScale (1.0),
     mPeriod(2*M_PI),
     mAmplitude(1),
     mPhaseShift(0),
@@ -29,6 +28,7 @@ RenderArea::RenderArea(QWidget *parent) :
     midlineLabel.setParent(this);
     maximumLabel.setParent(this);
     minimumLabel.setParent(this);
+    originLabel.setParent(this);
     for (int x = 0; x < 7; x++)
     {
         xLabels[x] = new QLabel(this);
@@ -204,6 +204,13 @@ void RenderArea::paintEvent(QPaintEvent *event)
     {
         midlineLabel.hide();
     }
+
+    // Label origin
+    originLabel.setText("(0,0)");
+    originLabel.adjustSize();
+    originLabel.move(mYAxisXValue + 1, mXAxisYValue - originLabel.size().height() - 1);
+    originLabel.show();
+
     // Label y axis with minimum and maximum values:
     painter.setPen(mAxisPen);
     int minimumYValue = mMidlineYValue + (int) std::round(mAmplitude*mYRatio);
@@ -243,27 +250,34 @@ void RenderArea::paintEvent(QPaintEvent *event)
     {
         float t = mXStart + (mPeriod.value()*0.25)*(float)xValue;
         int xPixelValue = mBuffer + ((this->width()-2*mBuffer)/6)*xValue;
-        PiNumber xDisplayValue(t);
-        labelStart.setX(xPixelValue);
-        labelStart.setY(mXAxisYValue - 3);
-        labelEnd.setX(xPixelValue);
-        labelEnd.setY(mXAxisYValue + 3);
-        painter.drawLine(labelStart, labelEnd);
-        xLabels[xValue]->setText(QString("%1").arg(xDisplayValue.displayValue()));
-        xLabels[xValue]->adjustSize();
-        switch (xValue)
+        if (xPixelValue != mYAxisXValue) // Only display this value if other than at origin
         {
-        case (0): // left most label needs to be right aligned.
-            xLabels[xValue]->move(xPixelValue - mBuffer, mXAxisYValue + 4);
-            break;
-        case(6): // right most label needs to be left aligned.
-            xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width() + mBuffer, mXAxisYValue + 4);
-            break;
-        default: // All others are centered.
-            xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width()/2,mXAxisYValue + 4);
-            break;
+            PiNumber xDisplayValue(t);
+            labelStart.setX(xPixelValue);
+            labelStart.setY(mXAxisYValue - 3);
+            labelEnd.setX(xPixelValue);
+            labelEnd.setY(mXAxisYValue + 3);
+            painter.drawLine(labelStart, labelEnd);
+            xLabels[xValue]->setText(QString("%1").arg(xDisplayValue.displayValue()));
+            xLabels[xValue]->adjustSize();
+            switch (xValue)
+            {
+            case (0): // left most label needs to be right aligned.
+                xLabels[xValue]->move(xPixelValue - mBuffer, mXAxisYValue + 4);
+                break;
+            case(6): // right most label needs to be left aligned.
+                xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width() + mBuffer, mXAxisYValue + 4);
+                break;
+            default: // All others are centered.
+                xLabels[xValue]->move(xPixelValue - xLabels[xValue]->size().width()/2,mXAxisYValue + 4);
+                break;
+            }
+            xLabels[xValue]->show();
         }
-        xLabels[xValue]->show();
+        else
+        {
+            xLabels[xValue]->hide();
+        }
     }
 
     float a, b, c, d; // f(x) = asin(b(x-c))+d

@@ -33,9 +33,6 @@ public:
     void setAxisColor (QColor color) { mAxisPen.setColor(color); } // setter
     QColor axisColor () const { return mAxisPen.color(); } // getter
 
-//    void setScale (float scale) { mScale = scale; repaint(); } // setter
-//    float scale () const { return mScale; } // getter
-
     void setInterval (float interval) { mIntervalLength = interval; update(); } // setter
     float interval () const { return mIntervalLength; } // getter
 
@@ -78,7 +75,6 @@ private:
 
     float mIntervalLength;
     int mStepCount;
-//    float mScale;
 
     PiNumber mPeriod; // Always positive number
     float mAmplitude; // Always positive, with mNegative implementing x-axis reflections.
@@ -106,6 +102,7 @@ private:
     QLabel midlineLabel;
     QLabel maximumLabel;
     QLabel minimumLabel;
+    QLabel originLabel;
     QLabel *xLabels[7];
     QLabel phaseShiftLabel;
     QString functionString;
