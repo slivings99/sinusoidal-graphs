@@ -248,8 +248,10 @@ void RenderArea::paintEvent(QPaintEvent *event)
     // Label x axis with quarter period values:
     for (int xValue = 0; xValue < 7; xValue++)
     {
-        float t = mXStart + (mPeriod.value()*0.25)*(float)xValue;
-        int xPixelValue = mBuffer + ((this->width()-2*mBuffer)/6)*xValue;
+//        float t = mXStart + (mPeriod.value()*0.25)*(float)xValue;
+        float t = -(0.25 * mPeriod.value() - mPhaseShift.value()) + (mPeriod.value()*0.25)*(float)xValue;
+//        int xPixelValue = mBuffer + ((this->width()-2*mBuffer)/6)*xValue;
+        int xPixelValue = (int)(t*mXRatio) + mOrigin.x();
         if (xPixelValue != mYAxisXValue) // Only display this value if other than at origin
         {
             PiNumber xDisplayValue(t);
