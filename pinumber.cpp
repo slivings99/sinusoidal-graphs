@@ -1,6 +1,7 @@
 #include "pinumber.h"
 #include <cmath>
 #include <QString>
+#include <QDebug>
 
 PiNumber::PiNumber(float value)
 {
@@ -46,14 +47,14 @@ void PiNumber::setValue(float value)
         mDenominator = 1;
         if (mRunTest)
         {
-            printf ("Whole Multiple of Pi: %d π \n", wholeNumber);
+            qDebug() << QString("Whole Multiple of Pi: %1 π").arg(mPiCoefficient);
         }
     }
     else
     {
         if (mRunTest)
         {
-            printf ("Ratio: %0.03f\n", piRatio);
+            qDebug() << "Ratio: " << QString::number(piRatio, 'f', 3);
         }
         ClosestFraction(piRatio, mMaxDenominator, thisNumerator, thisDenominator);
         float ratio = (float) thisNumerator / (float) thisDenominator;
@@ -67,13 +68,13 @@ void PiNumber::setValue(float value)
             }
             if (mRunTest)
             {
-                printf("Fraction: %d π / %d\n", mPiCoefficient, thisDenominator);
+                qDebug() << "Fraction: " << QString::number(mPiCoefficient) << "π / " << QString::number(thisDenominator);
             }
         }
         else {
             if (mRunTest)
             {
-                printf("Value: %0.2f\n", mValue);
+                qDebug() << "Value: " << QString::number(mValue, 'f', 2);
             }
             mIsFractionOfPi = false;
             mPiCoefficient = 0;
@@ -109,7 +110,8 @@ QString PiNumber::displayValue()
     }
     else
     {
-        output = QString("%1").arg(QString::number(mValue,'f', 3));
+//        output = QString("%1").arg(QString::number(mValue,'f', 3));
+        output = QString::number(mValue,'f', 3);
     }
     return(output);
 }

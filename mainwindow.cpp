@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-//    PiNumberTest    runTest(1);
+    PiNumberTest    runTest(1);
 
     ui->setupUi(this);
 
